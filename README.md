@@ -38,7 +38,8 @@ pip install -r requirements.txt
 ## Kullanım
 
 ```powershell
-# 1. Kaggle API token'ı %USERPROFILE%\.kaggle\kaggle.json içine yerleştirin, yarışma kurallarını kabul edin, sonra:
+# 1. Kaggle hesabınızdan API token alıp %USERPROFILE%\.kaggle\access_token içine yazın, telefon doğrulaması yapıp
+#    yarışma kurallarını (kaggle.com/c/severstal-steel-defect-detection/rules) kabul edin, sonra:
 .\scripts\download_data.ps1
 
 # 2. Hızlı yerel smoke-test (CPU, birkaç örnekle)
@@ -55,20 +56,20 @@ python -m src.infer --checkpoint checkpoints/best.pth --image data/raw/train_ima
 **Tamamlanan:**
 - [x] Proje iskeleti ve tüm `src/` modülleri yazıldı (rle, dataset, transforms, model, losses, metrics, engine, train, infer) — kodların yanına açıklayıcı yorumlar eklendi.
 - [x] `scripts/download_data.ps1` (Windows) ve `scripts/download_data.sh` (Colab/Linux) veri indirme betikleri.
-- [x] `notebooks/train_colab.ipynb` — Colab GPU eğitim akışı (repo klonlama → kaggle.json yükleme → indirme → `src.train` → Drive'a checkpoint kaydetme → örnek çıkarım).
+- [x] `notebooks/train_colab.ipynb` — Colab GPU eğitim akışı (repo klonlama → Kaggle token → indirme → `src.train` → Drive'a checkpoint kaydetme → örnek çıkarım).
 - [x] Geliştirme ortamı Windows'a taşındı: native `.venv` (Python 3.12) kuruldu, `torch`/`torchvision`/`opencv`/`albumentations`/`segmentation-models-pytorch`/`kaggle` bağımlılıkları kuruldu (WSL'deki eski venv silindi, WSL ortamı bozuk çıktı).
 - [x] Dummy veriyle uçtan uca smoke test geçti: transform pipeline → model forward-pass (U-Net/ResNet34) → BCE+Dice loss → IoU/Dice metrik hesaplama, hepsi Windows CPU'da çalışıyor.
 - [x] RLE encode/decode roundtrip testi ayrı doğrulandı.
-
 - [x] Disk alanı temizlendi (WSL'in bozuk Ubuntu dağıtımı + tekrarlayan dosyalar silindi) — kurulum sonrası ~1.3 GB'tan ~24 GB'a çıktı.
 - [x] Kaggle API kimlik bilgisi (`access_token`) oluşturuldu, telefon doğrulaması yapıldı, yarışma kuralları kabul edildi.
 - [x] Gerçek Severstal veri seti indirildi: `data/raw/train.csv` + 12.568 `train_images` + `test_images`.
 - [x] Gerçek veriyle CPU smoke-test çalıştırıldı (`--epochs 1 --limit-samples 16`) — uçtan uca sorunsuz, `checkpoints/best.pth` ve `last.pth` üretildi.
+- [x] `src.infer` gerçek smoke-test checkpoint'iyle denendi, overlay üretimi doğrulandı.
+- [x] Git deposu oluşturuldu ve GitHub'a pushlandı: [github.com/nursimaonerr/surface-defect-segmentation](https://github.com/nursimaonerr/surface-defect-segmentation) — Colab notebook'undaki `REPO_URL` güncellendi.
 
 **Bekleyen / sıradaki adımlar:**
-- [ ] Proje henüz bir git deposu değil — Colab notebook'undaki `REPO_URL` alanı doldurulmadı; GitHub'a pushlanacaksa `git init` + remote ekleme gerekiyor (ya da Drive üzerinden dosya taşıma alternatifi).
 - [ ] Gerçek/tam eğitim Colab GPU'da henüz çalıştırılmadı (yerelde sadece CPU smoke-test yapıldı, tüm veri setiyle tam eğitim yapılmadı).
-- [x] `src.infer` gerçek smoke-test checkpoint'iyle (`checkpoints/best.pth`) denendi, `overlay_test.png` üretildi.
+- [ ] Eğitim sonrası nicel değerlendirme (tam validasyon seti üzerinde IoU/Dice) henüz yapılmadı.
 
 ## Bilinen sorun: Windows'ta mutlak yol + Türkçe karakter
 
