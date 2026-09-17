@@ -67,9 +67,12 @@ python -m src.infer --checkpoint checkpoints/best.pth --image data/raw/train_ima
 - [x] `src.infer` gerçek smoke-test checkpoint'iyle denendi, overlay üretimi doğrulandı.
 - [x] Git deposu oluşturuldu ve GitHub'a pushlandı: [github.com/nursimaonerr/surface-defect-segmentation](https://github.com/nursimaonerr/surface-defect-segmentation) — Colab notebook'undaki `REPO_URL` güncellendi.
 
+- [x] Tam eğitim Colab GPU'da çalıştırıldı (`--arch unet --encoder resnet34 --epochs 40 --batch-size 16`). Sonuç (epoch 39): `val_mean_iou=0.8013`, `val_mean_dice=0.8339`.
+- [x] Eğitilmiş `best.pth` Drive üzerinden yerele indirildi (`checkpoints/best.pth`), birden fazla gerçek görüntüde `src.infer` ile doğrulandı — çizik/hata bölgeleri doğru segmente ediliyor, hatasız görüntülerde yanlış pozitif yok.
+
 **Bekleyen / sıradaki adımlar:**
-- [ ] Gerçek/tam eğitim Colab GPU'da henüz çalıştırılmadı (yerelde sadece CPU smoke-test yapıldı, tüm veri setiyle tam eğitim yapılmadı).
-- [ ] Eğitim sonrası nicel değerlendirme (tam validasyon seti üzerinde IoU/Dice) henüz yapılmadı.
+- [ ] Tam validasyon seti üzerinde sınıf bazında (4 defect tipi ayrı ayrı) IoU/Dice kırılımı henüz raporlanmadı (şu an sadece ortalama metrikler var).
+- [ ] Model iyileştirme fırsatları değerlendirilmedi: daha fazla epoch, farklı encoder (resnet50 vb.), test-time augmentation, threshold ayarı.
 
 ## Bilinen sorun: Windows'ta mutlak yol + Türkçe karakter
 
