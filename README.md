@@ -24,6 +24,7 @@ scripts/          veri indirme betiği
 - `src/metrics.py` — sınıf bazında ve ortalama IoU / Dice
 - `src/engine.py` — eğitim/doğrulama döngüleri
 - `src/train.py`, `src/infer.py` — CLI eğitim ve çıkarım betikleri
+- `src/app.py` — Gradio web arayüzü (görüntü yükle, tahmini gör)
 
 ## Geliştirme ortamı
 
@@ -49,6 +50,9 @@ python -m src.train --epochs 1 --batch-size 2 --limit-samples 16
 
 # 4. Çıkarım / görselleştirme
 python -m src.infer --checkpoint checkpoints/best.pth --image data/raw/train_images/<id>.jpg --out overlay.png
+
+# 5. Web arayüzü (Gradio) — tarayıcıdan görüntü yükleyip canlı tahmin görün
+python -m src.app --checkpoint checkpoints/best.pth
 ```
 
 ## Durum (2026-09-17)
@@ -69,6 +73,8 @@ python -m src.infer --checkpoint checkpoints/best.pth --image data/raw/train_ima
 
 - [x] Tam eğitim Colab GPU'da çalıştırıldı (`--arch unet --encoder resnet34 --epochs 40 --batch-size 16`). Sonuç (epoch 39): `val_mean_iou=0.8013`, `val_mean_dice=0.8339`.
 - [x] Eğitilmiş `best.pth` Drive üzerinden yerele indirildi (`checkpoints/best.pth`), birden fazla gerçek görüntüde `src.infer` ile doğrulandı — çizik/hata bölgeleri doğru segmente ediliyor, hatasız görüntülerde yanlış pozitif yok.
+
+- [x] `src/app.py` — Gradio web arayüzü eklendi (görüntü yükle + eşik kaydırıcı → overlay tahmini), API üzerinden uçtan uca doğrulandı.
 
 **Bekleyen / sıradaki adımlar:**
 - [ ] Tam validasyon seti üzerinde sınıf bazında (4 defect tipi ayrı ayrı) IoU/Dice kırılımı henüz raporlanmadı (şu an sadece ortalama metrikler var).
